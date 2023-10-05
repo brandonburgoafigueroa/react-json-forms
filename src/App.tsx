@@ -1,5 +1,6 @@
-import {getDefaultValuesFromJsonForm, InputType, JsonForm} from "./hooks/jsonForms";
+import {getDefaultValuesFromJsonForm, JsonForm} from "./hooks/jsonForms";
 import {useForm} from "react-hook-form";
+import {InputType, JsonFormWidgets} from "./hooks/types.ts";
 
 
 const json = {
@@ -28,7 +29,7 @@ const json = {
 
 
 
-const COMPONENTS = {
+const COMPONENTS:JsonFormWidgets = {
     Form:{
         Container:({children}:any)=><div>{children}</div>,
         Title:({children}:any)=><h1 style={{color:"red"}}>{children}</h1>,
@@ -44,8 +45,8 @@ const COMPONENTS = {
         Container:({children}:any)=><div>{children}</div>,
     },
     Inputs:{
-        Input:({value, onChange, onBlur, label, description}:any)=><div>{label}<input value={value} onChange={onChange} onBlur={onBlur} />{description}</div>,
-        TextArea:({value, onChange, onBlur, label, description}:any)=><div>{label}<input value={value} onChange={onChange} onBlur={onBlur} />{description}</div>
+        Input:({field:{value, onChange, onBlur}, label, description})=><div>{label}<input value={value} onChange={onChange} onBlur={onBlur} />{description}</div>,
+        TextArea:({field:{value, onChange, onBlur}, label, description})=><div>{label}<input value={value} onChange={onChange} onBlur={onBlur} />{description}</div>
     }
 }
 

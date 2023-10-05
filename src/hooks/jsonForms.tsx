@@ -1,70 +1,7 @@
-import React from "react";
-import {Controller, useForm, UseFormReturn} from "react-hook-form";
-
-export enum InputType {
-    Input="Input",
-    TextArea="TextArea",
-}
-
-export interface JsonFormSchema {
-    formTitle: string
-    formDescription: string
-    sections: Section[]
-}
-
-export interface Section {
-    sectionName:string
-    title: string
-    description: string
-    fields: Field[]
-}
-
-export interface Field {
-    fieldName:string
-    label: string
-    description?:string
-    type: string
-    inputType: InputType
-}
-
-interface Input {
-    value:string
-    onChange:(value:string)=>void
-    onBlur?:()=>void
-    label:string
-    description?:string
-}
-
-interface Widgets {
-    Form: {
-        Container:({value}:any)=>React.ReactNode,
-        Title:({value}:any)=>React.ReactNode,
-        Description:({value}:any)=>React.ReactNode,
-    },
-    Section:{
-        Title:({value}:any) =>React.ReactNode,
-        Description:({value}:any) =>React.ReactNode
-        Container:(children:any)=>React.ReactNode
-        FieldContainer:(children:any)=>React.ReactNode
-    },
-    Field:{
-        Container:(children:any)=>React.ReactNode
-    },
-    Inputs:{
-        Input:(props:Input)=>React.ReactElement
-        TextArea:(props:Input)=>React.ReactElement
-    }
-
-}
-
-interface JsonFormProps {
-    jsonFormSchema:JsonFormSchema
-    Widgets:Widgets
-}
-
-interface FormProps extends JsonFormProps {
-    form:UseFormReturn
-}
+import {
+    Controller,
+} from "react-hook-form";
+import {Field, JsonFormSchema, Section, FormProps} from "./types.ts";
 
 export const JsonForm = ({jsonFormSchema, Widgets, form}:FormProps)=>{
     const {control} = form;
@@ -76,7 +13,7 @@ export const JsonForm = ({jsonFormSchema, Widgets, form}:FormProps)=>{
         }
         const name = `${sectionName}.${field.fieldName}`
         return <Widgets.Field.Container>
-            <Controller control={control} render={({field:{onChange, onBlur, value}})=>renderComponent({...field, onBlur, onChange, value})} name={name}></Controller>
+            <Controller control={control} render={(renderProps)=>renderComponent({...renderProps, ...field})} name={name}></Controller>
         </Widgets.Field.Container>
     }
     const renderSection = (section:Section)=>{
