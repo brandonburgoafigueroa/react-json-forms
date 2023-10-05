@@ -13,10 +13,9 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'React Json Forms',
-      formats: ['es', 'umd'],
-      fileName: (format) => `react-json-forms.${format}.js`,
+      entry: path.resolve(__dirname, 'src/lib/index.ts'),
+      name: 'react-json-forms',
+      fileName: "index",
     },
     rollupOptions: {
       external: ['react'],
