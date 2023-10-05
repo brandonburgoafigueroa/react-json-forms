@@ -1,6 +1,6 @@
 
 import {useForm} from "react-hook-form";
-import {getDefaultValuesFromJsonForm, InputType, JsonForm, JsonFormSchema, JsonFormWidgets} from "./lib";
+import {getDefaultValuesFromJsonForm, InputType, JsonForm, JsonFormSchema, JsonFormWidgets} from "./src/lib";
 
 
 const json:JsonFormSchema = {
