@@ -1,9 +1,9 @@
-import {getDefaultValuesFromJsonForm, JsonForm} from "./hooks/jsonForms";
+
 import {useForm} from "react-hook-form";
-import {InputType, JsonFormWidgets} from "./hooks/types.ts";
+import {getDefaultValuesFromJsonForm, InputType, JsonForm, JsonFormSchema, JsonFormWidgets} from "./hooks";
 
 
-const json = {
+const json:JsonFormSchema = {
     formTitle:"Este es el titulo del formulario",
     formDescription:"Esta es la descripcion del formulario",
     sections:[{
@@ -14,39 +14,93 @@ const json = {
             fieldName:"nombre",
             label:"Nombre",
             description:"Este es el nombre",
-            type:"string",
-            inputType:InputType.Input
+            inputType:InputType.Input,
+            rules:{
+                required:{
+                    value:true,
+                    message:"Este campo es requerido"
+                }
+            }
         },
         {
             fieldName:"description",
              label:"Descripcion",
-             placeholder:"Ingrese la descripcion",
-             type:"string",
-             inputType:InputType.TextArea
+             inputType:InputType.TextArea,
+            rules:{
+                required:{
+                    value:true,
+                    message:"Este campo es requerido"
+                },
+                maxLength:{
+                    value:5,
+                    message:"el limite es 5"
+                }
+            }
             }]
-    }]
+    }, {
+        sectionName:"seccion 2",
+        title:"Seccion 2",
+        description:"Esta es la seccion 2",
+        fields:[{
+            fieldName:"nombre",
+            label:"Nombre",
+            description:"Este es el nombre",
+            inputType:InputType.Input,
+            rules:{
+                required:{
+                    value:true,
+                    message:"Este campo es requerido"
+                }
+            }
+        },
+            {
+                fieldName:"description",
+                label:"Descripcion",
+                inputType:InputType.TextArea,
+                rules:{
+                    required:{
+                        value:true,
+                        message:"Este campo es requerido"
+                    },
+                    maxLength:{
+                        value:5,
+                        message:"el limite es 5"
+                    }
+                }
+            }]
+    }],
+
 }
 
+const Row = ({children}:any)=>{
+    return <div style={{display:"flex", flexDirection:"row"}}>{children}</div>
+}
+
+const Column = ({children, style}:any)=>{
+    return <div style={{display:"flex", flexDirection:"column", ...style}}>{children}</div>
+}
 
 
 const COMPONENTS:JsonFormWidgets = {
     Form:{
-        Container:({children}:any)=><div>{children}</div>,
-        Title:({children}:any)=><h1 style={{color:"red"}}>{children}</h1>,
-        Description:({children}:any)=><h2 style={{color:"red"}}>{children}</h2>,
+        Container:({children}:any)=><Column>{children}</Column>,
+        Title:({children}:any)=><h1>{children}</h1>,
+        Description:({children}:any)=><h2>{children}</h2>,
     },
     Section:{
-        Container:({children}:any)=><div>{children}</div>,
-        Title:({children}:any)=><div style={{color:"red"}}>{children}</div>,
-        Description:({children}:any)=><div style={{color:"red"}}>{children}</div>,
-        FieldContainer:({children}:any)=><div style={{color:"red"}}>{children}</div>,
+        Container:({children}:any)=><Column>{children}</Column>,
+        Title:({children}:any)=><Row>{children}</Row>,
+        Description:({children}:any)=><Row>{children}</Row>,
+        FieldContainer:({children}:any)=><Column>{children}</Column>,
     },
     Field:{
-        Container:({children}:any)=><div>{children}</div>,
+        Container:({children}:any)=><Column style={{marginTop:20, marginBottom:20}}>{children}</Column>,
     },
     Inputs:{
-        Input:({field:{value, onChange, onBlur}, label, description})=><div>{label}<input value={value} onChange={onChange} onBlur={onBlur} />{description}</div>,
-        TextArea:({field:{value, onChange, onBlur}, label, description})=><div>{label}<input value={value} onChange={onChange} onBlur={onBlur} />{description}</div>
+        Input:({field:{value, onChange, onBlur},fieldState:{error}, label, description})=><Column>{label}<input value={value} onChange={onChange} onBlur={onBlur} />{description}{error && <div style={{color:"red"}}>{error.message}</div>}</Column>,
+        TextArea:({field:{value, onChange, onBlur},fieldState:{error}, label, description})=><Column>{label}<input value={value} onChange={onChange} onBlur={onBlur} />{description}{error && <div style={{color:"red"}}>{error.message}</div>}</Column>,
+        Radio:()=><></>,
+        Checkbox:()=><></>,
     }
 }
 
@@ -55,10 +109,10 @@ function App() {
     const onSubmit = (values:any)=>{
         console.log(values)
     }
-    return <div>
+    return <Column>
         <JsonForm jsonFormSchema={json} Widgets={COMPONENTS} form={form}/>
         <button onClick={form.handleSubmit(onSubmit)}>Guardar datos</button>
-    </div>
+    </Column>
 }
 
 export default App

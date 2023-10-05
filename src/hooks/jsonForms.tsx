@@ -1,7 +1,7 @@
 import {
     Controller,
 } from "react-hook-form";
-import {Field, JsonFormSchema, Section, FormProps} from "./types.ts";
+import {Field, FormProps, Section} from "./interfaces.ts";
 
 export const JsonForm = ({jsonFormSchema, Widgets, form}:FormProps)=>{
     const {control} = form;
@@ -13,7 +13,7 @@ export const JsonForm = ({jsonFormSchema, Widgets, form}:FormProps)=>{
         }
         const name = `${sectionName}.${field.fieldName}`
         return <Widgets.Field.Container>
-            <Controller control={control} render={(renderProps)=>renderComponent({...renderProps, ...field})} name={name}></Controller>
+            <Controller rules={field.rules} control={control} render={(renderProps)=>renderComponent({...renderProps, ...field})} name={name}></Controller>
         </Widgets.Field.Container>
     }
     const renderSection = (section:Section)=>{
@@ -40,17 +40,3 @@ export const JsonForm = ({jsonFormSchema, Widgets, form}:FormProps)=>{
     </Widgets.Form.Container>;
 }
 
-export const getDefaultValuesFromJsonForm = (jsonFormSchema:JsonFormSchema)=>{
-    const formData:Record<string, Record<string, string>> = {}
-    jsonFormSchema.sections.forEach(section => {
-        if (!formData[section.sectionName]) {
-            formData[section.sectionName] = {}
-        }
-        section.fields.forEach(field => {
-            if (!formData[section.sectionName][field.fieldName]) {
-                formData[section.sectionName][field.fieldName] = ""
-            }
-        })
-    })
-    return formData;
-}

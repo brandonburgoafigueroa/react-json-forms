@@ -1,5 +1,5 @@
 import React from "react";
-import {ControllerFieldState, ControllerRenderProps, UseFormReturn, UseFormStateReturn} from "react-hook-form";
+import {ControllerFieldState, ControllerRenderProps, UseFormReturn, UseFormStateReturn, RegisterOptions} from "react-hook-form";
 
 export enum InputType {
     Input="Input",
@@ -8,14 +8,14 @@ export enum InputType {
 
 export interface JsonFormSchema {
     formTitle: string
-    formDescription: string
+    formDescription?: string
     sections: Section[]
 }
 
 export interface Section {
     sectionName:string
     title: string
-    description: string
+    description?: string
     fields: Field[]
 }
 
@@ -23,8 +23,8 @@ export interface Field {
     fieldName:string
     label: string
     description?:string
-    type: string
     inputType: InputType
+    rules:Omit<RegisterOptions, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'| "validate"| "onChange"|"onBlur"|"shouldUnregister"|"deps"|"value">
 }
 
 
@@ -46,6 +46,8 @@ export interface JsonFormWidgets {
     Inputs:{
         Input:(props:Render)=>React.ReactElement
         TextArea:(props:Render)=>React.ReactElement
+        Radio:(props:Render)=>React.ReactElement
+        Checkbox:(props:Render)=>React.ReactElement
     }
 
 }
