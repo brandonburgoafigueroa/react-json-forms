@@ -14,7 +14,7 @@ const json:JsonFormSchema = {
             fieldName:"nombre",
             label:"Nombre",
             description:"Este es el nombre",
-            inputType:InputType.Input,
+            inputType:"Input",
             rules:{
                 required:{
                     value:true,
@@ -25,7 +25,7 @@ const json:JsonFormSchema = {
         {
             fieldName:"description",
              label:"Descripcion",
-             inputType:InputType.TextArea,
+             inputType:"TextArea",
             rules:{
                 required:{
                     value:true,
@@ -45,7 +45,7 @@ const json:JsonFormSchema = {
             fieldName:"nombre",
             label:"Nombre",
             description:"Este es el nombre",
-            inputType:InputType.Input,
+            inputType:"Input",
             rules:{
                 required:{
                     value:true,
@@ -56,7 +56,7 @@ const json:JsonFormSchema = {
             {
                 fieldName:"description",
                 label:"Descripcion",
-                inputType:InputType.TextArea,
+                inputType:"TextArea",
                 rules:{
                     required:{
                         value:true,

@@ -1,10 +1,7 @@
 import React from "react";
 import {ControllerFieldState, ControllerRenderProps, UseFormReturn, UseFormStateReturn, RegisterOptions} from "react-hook-form";
 
-export enum InputType {
-    Input="Input",
-    TextArea="TextArea",
-}
+export type InputType = "Input"| "TextArea"| "Radio"| "Checkbox"
 
 export interface JsonFormSchema {
     formTitle: string

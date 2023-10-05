@@ -1,7 +1,7 @@
 import {
     Controller,
 } from "react-hook-form";
-import {Field, FormProps, Section} from "./interfaces.ts";
+import {Field, FormProps, Section} from "./interfaces";
 
 export const JsonForm = ({jsonFormSchema, Widgets, form}:FormProps)=>{
     const {control} = form;

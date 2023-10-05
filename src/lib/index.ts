@@ -1,3 +1,3 @@
-export * from "./utils.ts"
-export * from "./jsonForms.tsx"
-export * from "./interfaces.ts"
+export * from "./utils"
+export * from "./jsonForms"
+export * from "./interfaces"

@@ -1,4 +1,4 @@
-import {JsonFormSchema} from "./interfaces.ts";
+import {JsonFormSchema} from "./interfaces";
 
 export const getDefaultValuesFromJsonForm = (jsonFormSchema:JsonFormSchema)=>{
     const formData:Record<string, Record<string, string>> = {}
