@@ -98,14 +98,14 @@ const table = {sections:[
     ]}
 
 function App() {
-
     const form = useForm({defaultValues:getDefaultValuesFromJsonForm(json)});
+    const {formState:{isValid}} = form;
     const onSubmit = (values:any)=>{
         console.log(values)
     }
     useEffect(()=>{
-        console.log(getDefaultValuesFromJsonForm(json))
-    },[])
+        console.log(isValid);
+    },[isValid])
     return <Column>
         <JsonForm jsonFormSchema={json} Widgets={COMPONENTS} form={form}/>
         <button onClick={form.handleSubmit(onSubmit)}>Guardar datos</button>

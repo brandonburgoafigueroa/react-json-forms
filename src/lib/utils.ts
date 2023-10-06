@@ -29,3 +29,7 @@ export const getDefaultValuesFromJsonForm = (jsonFormSchema:JsonFormSchema)=>{
     })
     return formData;
 }
+
+export const getTableResults = (schema:JsonFormSchema, results:unknown[]) => {
+
+}
