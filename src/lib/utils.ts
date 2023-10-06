@@ -1,9 +1,17 @@
-import {JsonFormSchema} from "./interfaces";
+import {InputType, JsonFormSchema} from "./interfaces";
 
 export const DefaultValuesForInputs = {
     number:0,
     string:"",
     boolean:false
+}
+
+
+export const ValueTypesAvailableForInput:Record<InputType, string[]>={
+    "Input":["number", "string"],
+    "TextArea":[ "string"],
+    "Checkbox":["boolean"],
+    "Radio":["string"],
 }
 
 export const getDefaultValuesFromJsonForm = (jsonFormSchema:JsonFormSchema)=>{

@@ -35,7 +35,7 @@ const json:JsonFormSchema = {
             label:"sillpancho",
             description:"Este es el nombre",
             inputType:"Checkbox",
-            type:"string",
+            type:"boolean",
             options:null,
             rules:{
                 required:{
