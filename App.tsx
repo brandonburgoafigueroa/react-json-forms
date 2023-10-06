@@ -27,7 +27,7 @@ const json:JsonFormSchema = {
             options:["SI", "NO"],
             rules:{
                 required:{
-                    value:true,
+                    value:false,
                     message:"Este campo es requerido"
                 }
             }
@@ -46,7 +46,7 @@ const json:JsonFormSchema = {
             options:null,
             rules:{
                 required:{
-                    value:true,
+                    value:false,
                     message:"Este campo es requerido"
                 }
             }
@@ -58,7 +58,7 @@ const json:JsonFormSchema = {
                 type:"boolean",
                 rules:{
                     required:{
-                        value:true,
+                        value:false,
                         message:"Este campo es requerido"
                     },
                     maxLength:{
