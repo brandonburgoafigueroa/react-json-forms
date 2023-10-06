@@ -3,6 +3,8 @@ import {
 } from "react-hook-form";
 import {Field, FormProps, Section} from "./interfaces";
 
+const defaultContainer = ({children}:any)=><>{children}</>
+
 export const JsonForm = ({jsonFormSchema, Widgets, form}:FormProps)=>{
     const {control} = form;
     const renderField = (sectionName:string, field:Field)=>{
@@ -11,32 +13,41 @@ export const JsonForm = ({jsonFormSchema, Widgets, form}:FormProps)=>{
         if (!renderComponent) {
             return null;
         }
+        const Container = Widgets?.Field?.Container || defaultContainer
         const name = `${sectionName}.${field.fieldName}`
-        return <Widgets.Field.Container>
-            <Controller rules={field.rules} control={control} render={(renderProps)=>renderComponent({...renderProps, ...field})} name={name}></Controller>
-        </Widgets.Field.Container>
+        return <Container>
+            <Controller rules={field.rules} control={control} render={(renderProps)=>renderComponent({...renderProps, fieldSchema:field})} name={name}></Controller>
+        </Container>
     }
     const renderSection = (section:Section)=>{
-        return <Widgets.Section.Container>
-            <Widgets.Section.Title>
+        const Container = Widgets?.Section?.Container || defaultContainer
+        const Title = Widgets?.Section?.Title || defaultContainer
+        const Description = Widgets?.Section?.Description || defaultContainer
+        const FieldsContainer = Widgets?.Section?.FieldsContainer || defaultContainer
+
+        return <Container>
+            <Title>
                 {section.title}
-            </Widgets.Section.Title>
-            <Widgets.Section.Description>
+            </Title>
+            <Description>
                 {section.description}
-            </Widgets.Section.Description>
-            <Widgets.Section.FieldContainer>
+            </Description>
+            <FieldsContainer>
                 {section.fields.map(field => renderField(section.sectionName, field))}
-            </Widgets.Section.FieldContainer>
-        </Widgets.Section.Container>
+            </FieldsContainer>
+        </Container>
     }
-    return <Widgets.Form.Container>
-        <Widgets.Form.Title>
+    const Container = Widgets?.Form?.Container || defaultContainer
+    const Title = Widgets?.Form?.Title || defaultContainer
+    const Description = Widgets?.Form?.Description || defaultContainer
+    return <Container>
+        <Title>
             {jsonFormSchema.formTitle}
-        </Widgets.Form.Title>
-        <Widgets.Form.Description>
+        </Title>
+        <Description>
             {jsonFormSchema.formDescription}
-        </Widgets.Form.Description>
+        </Description>
         {jsonFormSchema.sections.map(section => renderSection(section))}
-    </Widgets.Form.Container>;
+    </Container>;
 }
 

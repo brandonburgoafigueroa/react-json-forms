@@ -1,20 +1,22 @@
 
 import {useForm} from "react-hook-form";
 import {getDefaultValuesFromJsonForm, InputType, JsonForm, JsonFormSchema, JsonFormWidgets} from "./src/lib";
+import {useEffect} from "react";
 
 
 const json:JsonFormSchema = {
     formTitle:"Este es el titulo del formulario",
     formDescription:"Esta es la descripcion del formulario",
     sections:[{
-        sectionName:"seccion 1",
-        title:"Seccion 1",
+        sectionName:"Quieres pizza",
+        title:"Quieres pizza",
         description:"Esta es la seccion 1",
         fields:[{
-            fieldName:"nombre",
-            label:"Nombre",
-            description:"Este es el nombre",
-            inputType:"Input",
+            fieldName:"pizza",
+            label:"Quieres pizza",
+            description:"",
+            inputType:"Radio",
+            options:["SI", "NO"],
             rules:{
                 required:{
                     value:true,
@@ -22,30 +24,17 @@ const json:JsonFormSchema = {
                 }
             }
         },
-        {
-            fieldName:"description",
-             label:"Descripcion",
-             inputType:"TextArea",
-            rules:{
-                required:{
-                    value:true,
-                    message:"Este campo es requerido"
-                },
-                maxLength:{
-                    value:5,
-                    message:"el limite es 5"
-                }
-            }
-            }]
+       ]
     }, {
-        sectionName:"seccion 2",
-        title:"Seccion 2",
+        sectionName:"Selecciona tus platos",
+        title:"Selecciona tus platos",
         description:"Esta es la seccion 2",
         fields:[{
-            fieldName:"nombre",
-            label:"Nombre",
+            fieldName:"sillpancho",
+            label:"sillpancho",
             description:"Este es el nombre",
-            inputType:"Input",
+            inputType:"Checkbox",
+            options:null,
             rules:{
                 required:{
                     value:true,
@@ -54,9 +43,9 @@ const json:JsonFormSchema = {
             }
         },
             {
-                fieldName:"description",
-                label:"Descripcion",
-                inputType:"TextArea",
+                fieldName:"pique",
+                label:"pique",
+                inputType:"Checkbox",
                 rules:{
                     required:{
                         value:true,
@@ -83,32 +72,37 @@ const Column = ({children, style}:any)=>{
 
 const COMPONENTS:JsonFormWidgets = {
     Form:{
-        Container:({children}:any)=><Column>{children}</Column>,
         Title:({children}:any)=><h1>{children}</h1>,
         Description:({children}:any)=><h2>{children}</h2>,
     },
     Section:{
-        Container:({children}:any)=><Column>{children}</Column>,
         Title:({children}:any)=><Row>{children}</Row>,
         Description:({children}:any)=><Row>{children}</Row>,
-        FieldContainer:({children}:any)=><Column>{children}</Column>,
-    },
-    Field:{
-        Container:({children}:any)=><Column style={{marginTop:20, marginBottom:20}}>{children}</Column>,
     },
     Inputs:{
-        Input:({field:{value, onChange, onBlur},fieldState:{error}, label, description})=><Column>{label}<input value={value} onChange={onChange} onBlur={onBlur} />{description}{error && <div style={{color:"red"}}>{error.message}</div>}</Column>,
-        TextArea:({field:{value, onChange, onBlur},fieldState:{error}, label, description})=><Column>{label}<input value={value} onChange={onChange} onBlur={onBlur} />{description}{error && <div style={{color:"red"}}>{error.message}</div>}</Column>,
-        Radio:()=><></>,
-        Checkbox:()=><></>,
+        Input:({field:{value, onChange, onBlur},fieldState:{error}, fieldSchema: {label, description, options}})=><Column>{label}<input value={value} onChange={onChange} onBlur={onBlur} />{description}{error && <div style={{color:"red"}}>{error.message}</div>}</Column>,
+        TextArea:({field:{value, onChange, onBlur},fieldState:{error}, fieldSchema:{label, description, options}})=><Column>{label}<input value={value} onChange={onChange} onBlur={onBlur} />{description}{error && <div style={{color:"red"}}>{error.message}</div>}</Column>,
+        Radio:({field:{value, onChange, onBlur},fieldState:{error}, fieldSchema:{label, description, options}})=> {
+            return <Column>{label}<input value={value} onChange={onChange} onBlur={onBlur}/>{description}{error &&
+                <div style={{color: "red"}}>{error.message}</div>}</Column>
+        },
+        Checkbox:({field:{value, onChange, onBlur},fieldState:{error}, fieldSchema:{label, description, options}})=><Column>{label}<input value={value} onChange={onChange} onBlur={onBlur} />{description}{error && <div style={{color:"red"}}>{error.message}</div>}</Column>,
     }
 }
+const table = {sections:[
+        {title:"Que quieres comer?", header:["Pizza", "Siplanchos"], data:[["SI", "SI"],["SI", "SI"], ["NO", "NO"], ["NO", "SI"]]},
+        {title:"Quieres pizza?", header:["Pizza", "Siplanchos"], data:[["SI", "NO"],["NO", "SI"], ["NO", "SI"], ["NO", "SI"]]}
+    ]}
 
 function App() {
+
     const form = useForm({defaultValues:getDefaultValuesFromJsonForm(json)});
     const onSubmit = (values:any)=>{
         console.log(values)
     }
+    useEffect(()=>{
+        console.log(getDefaultValuesFromJsonForm(json))
+    },[])
     return <Column>
         <JsonForm jsonFormSchema={json} Widgets={COMPONENTS} form={form}/>
         <button onClick={form.handleSubmit(onSubmit)}>Guardar datos</button>
