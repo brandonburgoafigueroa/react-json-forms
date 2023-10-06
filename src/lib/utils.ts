@@ -1,5 +1,5 @@
 import {InputType, JsonFormSchema} from "./interfaces";
-import {get} from "react-hook-form";
+import {cloneDeep, get} from "lodash"
 
 export const DefaultValuesForInputs = {
     number:0,
@@ -15,6 +15,9 @@ export const ValueTypesAvailableForInput:Record<InputType, string[]>={
     "Radio":["string"],
 }
 
+const getFieldPropertyAccessor = (sectionName:string, fieldName:string)=> {
+    return `${sectionName}.${fieldName}`
+}
 export const getDefaultValuesFromJsonForm = (jsonFormSchema:JsonFormSchema)=>{
     const formData:Record<string, Record<string, any>> = {}
     jsonFormSchema.sections.forEach(section => {
@@ -48,13 +51,57 @@ export const getTableResults = (schema:JsonFormSchema, answers:unknown[]) => {
             const data:string[] = [];
             section.fields.forEach(field => {
                 sectionExport.header[columnIndex] = field.label;
-                const fieldNameAccessor = `${section.sectionName}.${field.fieldName}`;
+                const fieldNameAccessor = getFieldPropertyAccessor(section.sectionName, field.fieldName);
                 data.push(get(answer, fieldNameAccessor))
                 columnIndex++
             })
             sectionExport.data.push(data)
         })
         result.push(sectionExport)
+    })
+    return result;
+}
+type Summary = Record<string, Record<string, Record<string, number>>>
+export const createAnswersSummary = <T>(jsonSchema:JsonFormSchema, answer:T)=>{
+    const summary:Summary = {};
+    jsonSchema.sections.forEach(section => {
+        if (!summary[section.sectionName]) {
+            summary[section.sectionName] = {}
+        }
+        section.fields.forEach(field => {
+            if (!summary[section.sectionName][field.fieldName]) {
+                summary[section.sectionName][field.fieldName] = {}
+            }
+            const fieldNameAccessor = getFieldPropertyAccessor(section.sectionName, field.fieldName);
+            const fieldValue = get(answer, fieldNameAccessor);
+            if (!summary[section.sectionName][field.fieldName][`${fieldValue}`]) {
+                summary[section.sectionName][field.fieldName][`${fieldValue}`] = 1;
+            }
+        })
+    })
+    return summary;
+}
+
+
+export const buildAnswersSummary = <T>(jsonSchema:JsonFormSchema, answer:T, summary?:Summary)=>{
+    const result = summary ? cloneDeep(summary) : {};
+    jsonSchema.sections.forEach(section => {
+        if (!result[section.sectionName]) {
+            result[section.sectionName] = {}
+        }
+        section.fields.forEach(field => {
+            if (!result[section.sectionName][field.fieldName]) {
+                result[section.sectionName][field.fieldName] = {}
+            }
+            const fieldNameAccessor = getFieldPropertyAccessor(section.sectionName, field.fieldName);
+            const fieldValue = get(answer, fieldNameAccessor);
+            if (!result[section.sectionName][field.fieldName][`${fieldValue}`]) {
+                result[section.sectionName][field.fieldName][`${fieldValue}`] = 1;
+            }
+            else {
+                result[section.sectionName][field.fieldName][`${fieldValue}`]++
+            }
+        })
     })
     return result;
 }

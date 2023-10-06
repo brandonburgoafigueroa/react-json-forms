@@ -1,9 +1,9 @@
 
 import {useForm} from "react-hook-form";
 import {
+    buildAnswersSummary,
     getDefaultValuesFromJsonForm,
     getTableResults,
-    InputType,
     JsonForm,
     JsonFormSchema,
     JsonFormWidgets
@@ -102,7 +102,7 @@ const COMPONENTS:JsonFormWidgets = {
 
 
 function App() {
-    const form = useForm({defaultValues:getDefaultValuesFromJsonForm(json)});
+    const form = useForm({defaultValues:getDefaultValuesFromJsonForm(json), mode:"all"});
     const {formState:{isValid}} = form;
     const onSubmit = (values:any)=>{
         const results = [values, values, values, values, values];
@@ -110,6 +110,34 @@ function App() {
         table.forEach(table => {
             console.table([[...table.header], ...table.data])
         })
+        let summary = buildAnswersSummary(json, {
+            "Quieres pizza": {
+                "pizza": false
+            },
+            "Selecciona tus platos": {
+                "sillpancho": false,
+                "pique": false
+            }
+        });
+        summary = buildAnswersSummary(json, {
+            "Quieres pizza": {
+                "pizza": true
+            },
+            "Selecciona tus platos": {
+                "sillpancho": true,
+                "pique": true
+            }
+        }, summary);
+        summary = buildAnswersSummary(json, {
+            "Quieres pizza": {
+                "pizza": "NO"
+            },
+            "Selecciona tus platos": {
+                "sillpancho": "PUEDE SER",
+                "pique": "QUIZAS"
+            }
+        }, summary);
+        console.log(summary)
     }
     useEffect(()=>{
         console.log(isValid);
