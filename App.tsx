@@ -16,6 +16,7 @@ const json:JsonFormSchema = {
             label:"Quieres pizza",
             description:"",
             inputType:"Radio",
+            type:"boolean",
             options:["SI", "NO"],
             rules:{
                 required:{
@@ -34,6 +35,7 @@ const json:JsonFormSchema = {
             label:"sillpancho",
             description:"Este es el nombre",
             inputType:"Checkbox",
+            type:"string",
             options:null,
             rules:{
                 required:{
@@ -46,6 +48,7 @@ const json:JsonFormSchema = {
                 fieldName:"pique",
                 label:"pique",
                 inputType:"Checkbox",
+                type:"boolean",
                 rules:{
                     required:{
                         value:true,

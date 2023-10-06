@@ -2,6 +2,7 @@ import React from "react";
 import {ControllerFieldState, ControllerRenderProps, UseFormReturn, UseFormStateReturn, RegisterOptions} from "react-hook-form";
 
 export type InputType = "Input"| "TextArea"| "Radio"| "Checkbox"
+export type Type = "number" | "string" | "boolean"
 
 export interface JsonFormSchema {
     formTitle: string
@@ -22,6 +23,7 @@ export interface Field {
     description?:string
     inputType: InputType
     options?:string[]
+    type:Type
     rules:Omit<RegisterOptions, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'| "validate"| "onChange"|"onBlur"|"shouldUnregister"|"deps"|"value">
 }
 
