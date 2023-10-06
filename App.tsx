@@ -1,6 +1,13 @@
 
 import {useForm} from "react-hook-form";
-import {getDefaultValuesFromJsonForm, InputType, JsonForm, JsonFormSchema, JsonFormWidgets} from "./src/lib";
+import {
+    getDefaultValuesFromJsonForm,
+    getTableResults,
+    InputType,
+    JsonForm,
+    JsonFormSchema,
+    JsonFormWidgets
+} from "./src/lib";
 import {useEffect} from "react";
 
 
@@ -92,16 +99,17 @@ const COMPONENTS:JsonFormWidgets = {
         Checkbox:({field:{value, onChange, onBlur},fieldState:{error}, fieldSchema:{label, description, options}})=><Column>{label}<input value={value} onChange={onChange} onBlur={onBlur} />{description}{error && <div style={{color:"red"}}>{error.message}</div>}</Column>,
     }
 }
-const table = {sections:[
-        {title:"Que quieres comer?", header:["Pizza", "Siplanchos"], data:[["SI", "SI"],["SI", "SI"], ["NO", "NO"], ["NO", "SI"]]},
-        {title:"Quieres pizza?", header:["Pizza", "Siplanchos"], data:[["SI", "NO"],["NO", "SI"], ["NO", "SI"], ["NO", "SI"]]}
-    ]}
+
 
 function App() {
     const form = useForm({defaultValues:getDefaultValuesFromJsonForm(json)});
     const {formState:{isValid}} = form;
     const onSubmit = (values:any)=>{
-        console.log(values)
+        const results = [values, values, values, values, values];
+        const table = getTableResults(json, results);
+        table.forEach(table => {
+            console.table([[...table.header], ...table.data])
+        })
     }
     useEffect(()=>{
         console.log(isValid);

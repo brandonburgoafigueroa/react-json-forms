@@ -1,4 +1,5 @@
 import {InputType, JsonFormSchema} from "./interfaces";
+import {get} from "react-hook-form";
 
 export const DefaultValuesForInputs = {
     number:0,
@@ -30,6 +31,30 @@ export const getDefaultValuesFromJsonForm = (jsonFormSchema:JsonFormSchema)=>{
     return formData;
 }
 
-export const getTableResults = (schema:JsonFormSchema, results:unknown[]) => {
 
+type TableResult = {title:string,description:string, header:string[], data:string[][]}
+export const getTableResults = (schema:JsonFormSchema, answers:unknown[]) => {
+    const result:TableResult[] = []
+    schema.sections.forEach(section => {
+        const sectionExport:TableResult = {
+            title:section.title,
+            description:section.description || "",
+            header:[],
+            data:[]
+        }
+
+        answers.forEach(answer => {
+            let columnIndex = 0;
+            const data:string[] = [];
+            section.fields.forEach(field => {
+                sectionExport.header[columnIndex] = field.label;
+                const fieldNameAccessor = `${section.sectionName}.${field.fieldName}`;
+                data.push(get(answer, fieldNameAccessor))
+                columnIndex++
+            })
+            sectionExport.data.push(data)
+        })
+        result.push(sectionExport)
+    })
+    return result;
 }
