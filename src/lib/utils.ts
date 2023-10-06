@@ -1,6 +1,6 @@
 import {JsonFormSchema} from "./interfaces";
 
-const DefaultValuesForInputs = {
+export const DefaultValuesForInputs = {
     number:0,
     string:"",
     boolean:false
