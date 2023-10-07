@@ -2,7 +2,7 @@ import React from "react";
 import {ControllerFieldState, ControllerRenderProps, UseFormReturn, UseFormStateReturn, RegisterOptions} from "react-hook-form";
 
 export type InputType = "Input"| "TextArea"| "Radio"| "Checkbox"
-export type Type = "number" | "string" | "boolean"
+export type Type = "number" | "string" | "array"
 
 export interface JsonFormSchema {
     formTitle: string

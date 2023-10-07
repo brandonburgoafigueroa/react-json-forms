@@ -1,17 +1,17 @@
 import {InputType, JsonFormSchema} from "./interfaces";
-import {cloneDeep, get} from "lodash"
+import {cloneDeep, get, orderBy} from "lodash"
 
 export const DefaultValuesForInputs = {
     number:0,
     string:"",
-    boolean:false
+    array:[]
 }
 
 
 export const ValueTypesAvailableForInput:Record<InputType, string[]>={
     "Input":["number", "string"],
-    "TextArea":[ "string"],
-    "Checkbox":["boolean"],
+    "TextArea":["string"],
+    "Checkbox":["array"],
     "Radio":["string"],
 }
 
@@ -104,4 +104,17 @@ export const buildAnswersSummary = <T>(jsonSchema:JsonFormSchema, answer:T, summ
         })
     })
     return result;
+}
+
+export const getNewSelectedValuesCheckbox=(option:string, isChecked:boolean, currentValue:string[])=>{
+    if (!isChecked) {
+        return orderBy(Array.from(new Set(currentValue.filter(item => item !== option))))
+    }
+    else {
+        return orderBy(Array.from(new Set( [...currentValue,option])))
+    }
+}
+
+export const isChecked = (option:string, value:string[])=>{
+    return value.find(item => item === option)
 }

@@ -2,8 +2,8 @@
 import {useForm} from "react-hook-form";
 import {
     buildAnswersSummary,
-    getDefaultValuesFromJsonForm,
-    getTableResults,
+    getDefaultValuesFromJsonForm, getNewSelectedValuesCheckbox,
+    getTableResults, isChecked,
     JsonForm,
     JsonFormSchema,
     JsonFormWidgets
@@ -23,7 +23,7 @@ const json:JsonFormSchema = {
             label:"Quieres pizza",
             description:"",
             inputType:"Radio",
-            type:"boolean",
+            type:"string",
             options:["SI", "NO"],
             rules:{
                 required:{
@@ -32,43 +32,22 @@ const json:JsonFormSchema = {
                 }
             }
         },
-       ]
-    }, {
-        sectionName:"Selecciona tus platos",
-        title:"Selecciona tus platos",
-        description:"Esta es la seccion 2",
-        fields:[{
-            fieldName:"sillpancho",
-            label:"sillpancho",
-            description:"Este es el nombre",
-            inputType:"Checkbox",
-            type:"boolean",
-            options:null,
-            rules:{
-                required:{
-                    value:false,
-                    message:"Este campo es requerido"
-                }
-            }
-        },
             {
-                fieldName:"pique",
-                label:"pique",
+                fieldName:"sillpancho",
+                label:"Quieres Sillpancho",
+                description:"",
                 inputType:"Checkbox",
-                type:"boolean",
+                type:"array",
+                options:["SI", "NO", "talvez", "quizas"],
                 rules:{
                     required:{
                         value:false,
                         message:"Este campo es requerido"
-                    },
-                    maxLength:{
-                        value:5,
-                        message:"el limite es 5"
                     }
                 }
-            }]
+            }
+       ]
     }],
-
 }
 
 const Row = ({children}:any)=>{
@@ -96,7 +75,9 @@ const COMPONENTS:JsonFormWidgets = {
             return <Column>{label}<input value={value} onChange={onChange} onBlur={onBlur}/>{description}{error &&
                 <div style={{color: "red"}}>{error.message}</div>}</Column>
         },
-        Checkbox:({field:{value, onChange, onBlur},fieldState:{error}, fieldSchema:{label, description, options}})=><Column>{label}<input value={value} onChange={onChange} onBlur={onBlur} />{description}{error && <div style={{color:"red"}}>{error.message}</div>}</Column>,
+        Checkbox:({field:{value, onChange, onBlur},fieldState:{error}, fieldSchema:{label, description, options}})=><Column>{label}{options.map(option => <input type="checkbox" value={option} checked={isChecked(option, value)} onChange={(event)=>{
+           onChange(getNewSelectedValuesCheckbox(option, event.target.checked, value));
+        }} />)}</Column>,
     }
 }
 
