@@ -93,30 +93,19 @@ function App() {
         })
         let summary = buildAnswersSummary(json, {
             "Quieres pizza": {
-                "pizza": false
-            },
-            "Selecciona tus platos": {
-                "sillpancho": false,
-                "pique": false
+                "pizza": "SI"
             }
         });
         summary = buildAnswersSummary(json, {
             "Quieres pizza": {
-                "pizza": true
+                "sillpancho": ["SI", "NO"]
             },
-            "Selecciona tus platos": {
-                "sillpancho": true,
-                "pique": true
-            }
+
         }, summary);
         summary = buildAnswersSummary(json, {
             "Quieres pizza": {
-                "pizza": "NO"
+                "sillpancho": ["SI", "quizas"]
             },
-            "Selecciona tus platos": {
-                "sillpancho": "PUEDE SER",
-                "pique": "QUIZAS"
-            }
         }, summary);
         console.log(summary)
     }

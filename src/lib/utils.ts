@@ -1,5 +1,5 @@
 import {InputType, JsonFormSchema} from "./interfaces";
-import {cloneDeep, get, orderBy} from "lodash"
+import {cloneDeep, get, isArray, orderBy} from "lodash"
 
 export const DefaultValuesForInputs = {
     number:0,
@@ -95,11 +95,15 @@ export const buildAnswersSummary = <T>(jsonSchema:JsonFormSchema, answer:T, summ
             }
             const fieldNameAccessor = getFieldPropertyAccessor(section.sectionName, field.fieldName);
             const fieldValue = get(answer, fieldNameAccessor);
-            if (!result[section.sectionName][field.fieldName][`${fieldValue}`]) {
-                result[section.sectionName][field.fieldName][`${fieldValue}`] = 1;
-            }
-            else {
-                result[section.sectionName][field.fieldName][`${fieldValue}`]++
+            if (fieldValue !== undefined) {
+                const answers = isArray(fieldValue) ? fieldValue : [fieldValue];
+                answers.forEach(answer => {
+                    if (!result[section.sectionName][field.fieldName][`${answer}`]) {
+                        result[section.sectionName][field.fieldName][`${answer}`] = 1;
+                    } else {
+                        result[section.sectionName][field.fieldName][`${answer}`]++
+                    }
+                })
             }
         })
     })
