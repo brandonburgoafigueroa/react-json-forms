@@ -67,3 +67,22 @@ export interface Render {
     formState: UseFormStateReturn<any>;
     fieldSchema:Field
 }
+
+
+export type AnswersSummary = {
+    value:any,
+    quantity:number
+}
+
+export type FieldSummary = {
+    label:string,
+    description:string,
+    total:number
+    answers:AnswersSummary[]
+}
+
+export type SectionSummary = {
+    title:string,
+    description:string,
+    fields:FieldSummary[]
+}

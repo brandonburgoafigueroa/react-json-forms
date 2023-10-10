@@ -1,4 +1,4 @@
-import {InputType, JsonFormSchema} from "./interfaces";
+import {FieldSummary, InputType, JsonFormSchema, SectionSummary} from "./interfaces";
 import {cloneDeep, get, isArray, orderBy} from "lodash"
 
 export const DefaultValuesForInputs = {
@@ -121,4 +121,36 @@ export const getNewSelectedValuesCheckbox=(option:string, isChecked:boolean, cur
 
 export const isChecked = (option:string, value:string[])=>{
     return value.find(item => item === option)
+}
+
+export const getAnswersSummaryOrdered = (json:JsonFormSchema, summary:Summary)=>{
+    const result:SectionSummary[] = []
+    json.sections.forEach(section => {
+        const sectionData:SectionSummary = {
+            title:section.title,
+            description:section.description ||"",
+            fields:[]
+        }
+        section.fields.forEach(field => {
+            const fieldData:FieldSummary = {
+                label:field.label,
+                description:field.description || "",
+                total:0,
+                answers:[]
+            }
+            const fieldNameAccessor = getFieldPropertyAccessor(section.sectionName, field.fieldName);
+            // @ts-ignore
+            const fieldAnswers:Record<string, number> = get(summary, fieldNameAccessor);
+            Object.entries(fieldAnswers).forEach(([answer, quantity])=>{
+                fieldData.answers.push({
+                    value:answer,
+                    quantity:quantity
+                })
+                fieldData.total = fieldData.total + quantity
+            })
+            sectionData.fields.push(fieldData)
+        })
+        result.push(sectionData);
+    })
+    return result;
 }

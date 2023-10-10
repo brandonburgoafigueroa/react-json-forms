@@ -1,7 +1,7 @@
 
 import {useForm} from "react-hook-form";
 import {
-    buildAnswersSummary,
+    buildAnswersSummary, getAnswersSummaryOrdered,
     getDefaultValuesFromJsonForm, getNewSelectedValuesCheckbox,
     getTableResults, isChecked,
     JsonForm,
@@ -49,6 +49,23 @@ const json:JsonFormSchema = {
        ]
     }],
 }
+
+
+/*const answersSummary:SectionSummary = [{
+    title:"",
+    description:"",
+    fields:[
+        {
+            label:"",
+            description:"",
+            total:0,
+            answers:[{
+             value:"",
+             quantity:""
+            }]
+        }
+    ]
+}]*/
 
 const Row = ({children}:any)=>{
     return <div style={{display:"flex", flexDirection:"row"}}>{children}</div>
@@ -108,6 +125,9 @@ function App() {
             },
         }, summary);
         console.log(summary)
+        const resultados = getAnswersSummaryOrdered(json, summary);
+        console.log(resultados)
+
     }
     useEffect(()=>{
         console.log(isValid);
